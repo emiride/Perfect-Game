@@ -11,6 +11,8 @@ base_url = "http://www.perfectgame.org/Players/"
 #-----------------------------------------------------------------------------------------
 file_name = "links410_420"
 num_of_threads = 4
+username = ""
+password = ""
 #-----------------------------------------------------------------------------------------
 
 file_txt = open("C:\\Users\\emirh\\PycharmProjects\\untitled\\Other\\"+file_name+".txt" , "r")
@@ -32,8 +34,8 @@ def parserilion():
     driver.set_window_size(1500,1080)
     driver.get("http://www.perfectgame.org/")
     driver.find_element_by_id("signdiv").click()
-    driver.find_element_by_name("ctl00$Header1$HeaderTop1$tbUsername").send_keys("hockeyscoutingca@hotmail.com")
-    driver.find_element_by_name("ctl00$Header1$HeaderTop1$tbPassword").send_keys("bballstats10")
+    driver.find_element_by_name("ctl00$Header1$HeaderTop1$tbUsername").send_keys(username)
+    driver.find_element_by_name("ctl00$Header1$HeaderTop1$tbPassword").send_keys(password)
     driver.find_element_by_name("ctl00$Header1$HeaderTop1$Button1").click()
 
     while not q.empty():
