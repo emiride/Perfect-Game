@@ -4,18 +4,19 @@ import csv
 import sys
 from queue import Queue
 from threading import Thread
+from datetime import datetime
 
 q = Queue(maxsize=0)
 base_url = "http://www.perfectgame.org/Players/"
 
 #-----------------------------------------------------------------------------------------
-file_name = "links410_420"
+in_file_name = "links350_400"
 num_of_threads = 4
-username = ""
-password = ""
 #-----------------------------------------------------------------------------------------
+out_file_name = "contact_data"+in_file_name[-7:]+".csv"
 
-file_txt = open("C:\\Users\\emirh\\PycharmProjects\\untitled\\Other\\"+file_name+".txt" , "r")
+start_time = datetime.now()
+file_txt = open("C:\\Users\\emirh\\PycharmProjects\\untitled\\Other\\"+in_file_name+".txt" , "r")
 urls = file_txt.readlines()
 file_txt.close()
 print(len(urls))
@@ -23,7 +24,7 @@ print(len(urls))
 for url in urls:
     q.put(url)
 
-file_csv = open("contact_data410_420.csv", "w", newline='', encoding='utf-8')
+file_csv = open(out_file_name, "w", newline='', encoding='utf-8')
 csv_writer = csv.writer(file_csv, dialect=csv.excel)
 csv_writer.writerow(["ID","Name and Surname","Address","Phone","Email", "HS Coach", "Coach Phone", "Coach Email", "Player DOB", "Player's other sports", "Player's glasses/contacts", "Father", "Father's athletic history", "Father's college", "Mother", "Mother's athletic history", "Mother's college"])
 
@@ -34,8 +35,8 @@ def parserilion():
     driver.set_window_size(1500,1080)
     driver.get("http://www.perfectgame.org/")
     driver.find_element_by_id("signdiv").click()
-    driver.find_element_by_name("ctl00$Header1$HeaderTop1$tbUsername").send_keys(username)
-    driver.find_element_by_name("ctl00$Header1$HeaderTop1$tbPassword").send_keys(password)
+    driver.find_element_by_name("ctl00$Header1$HeaderTop1$tbUsername").send_keys("hockeyscoutingca@hotmail.com")
+    driver.find_element_by_name("ctl00$Header1$HeaderTop1$tbPassword").send_keys("bballstats10")
     driver.find_element_by_name("ctl00$Header1$HeaderTop1$Button1").click()
 
     while not q.empty():
@@ -61,7 +62,6 @@ def parserilion():
                 address = "NaN";
                 phone = "NaN";
                 email = "NaN";
-                print(str(url_id) + " first: " + str(sys.exc_info()[0]))
     #-------------------------------------------------------------------------------------
             try:
                 driver.find_element_by_id("ContentPlaceHolder1_lbCoach").click()
@@ -79,7 +79,6 @@ def parserilion():
                 hs_coach = "NaN";
                 phone_coach = "NaN";
                 email_coach = "NaN";
-                print(str(url_id) + " second: " + str(sys.exc_info()[0]))
     #-----------------------------------------------------------------------------------------
             sleep(1)
             driver.execute_script("window.scrollTo(0, 1400);")
@@ -117,7 +116,6 @@ def parserilion():
                 mother = "NaN";
                 mother_athl_hist = "NaN";
                 mother_college = "NaN"
-                print(str(url_id) + " third: " + str(sys.exc_info()[0]))
             csv_writer.writerow([url_id,name,address,phone,email,hs_coach,phone_coach,email_coach,player_dob,player_other_sports,player_glasses,father,father_athl_hist,father_college,mother,mother_athl_hist,mother_college])
             file_csv.flush()
         except:
@@ -138,6 +136,7 @@ def parserilion():
             mother_college = "NaN"
             print(str(url_id) + " last: " + str(sys.exc_info()[0]))
         csv_writer.writerow([url_id, name, address, phone, email, hs_coach, phone_coach, email_coach, player_dob, player_other_sports, player_glasses, father, father_athl_hist, father_college, mother, mother_athl_hist, mother_college])
+        print(url_id)
         file_csv.flush()
         q.task_done()
 
@@ -148,3 +147,5 @@ for i in range(num_of_threads):
 q.join()
 
 file_csv.close()
+
+print (datetime.now()-start_time)
