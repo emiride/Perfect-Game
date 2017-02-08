@@ -9,11 +9,9 @@ from bs4 import BeautifulSoup
 import requests
 from selenium import webdriver
 #------------------------------------------------------------------------------------------------
-_from = 340000                         #               CHANGE
-_to = 350000                           #                     THIS
-no_of_threads = 4                      #                         PART   
-username = ""
-password = ""
+_from = 350000                         #               CHANGE
+_to = 400000                          #                     THIS
+no_of_threads = 8                      #                         PART
 #-------------------------------------------------------------------------------------------------
 start_time = datetime.now()
 q = Queue(maxsize=0)
@@ -24,8 +22,8 @@ _1Name_and_Surname="";_2HS_Grad="";_3Age="";_4Age_on_2017_draft="";_5Position_pr
 driver = webdriver.Chrome(r"chromedriver.exe")
 driver.get(r"http://www.perfectgame.org")
 driver.find_element_by_id("signdiv").click()
-driver.find_element_by_name("ctl00$Header1$HeaderTop1$tbUsername").send_keys(username)
-driver.find_element_by_name("ctl00$Header1$HeaderTop1$tbPassword").send_keys(password)
+driver.find_element_by_name("ctl00$Header1$HeaderTop1$tbUsername").send_keys("hockeyscoutingca@hotmail.com")
+driver.find_element_by_name("ctl00$Header1$HeaderTop1$tbPassword").send_keys("bballstats10")
 driver.find_element_by_name("ctl00$Header1$HeaderTop1$Button1").click()
 
 s = requests.Session()
